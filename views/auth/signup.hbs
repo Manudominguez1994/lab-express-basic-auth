@@ -1,0 +1,18 @@
+<div>
+  <h3>Registrate</h3>
+  <form action="/auth/signup" method="post">
+    <label for="username">Nombre</label>
+    <input type="text" name="username" required="true" />
+    <br />
+    <label for="email">E-mail</label>
+    <input type="email" name="email" />
+    <br />
+    <label for="password">Password</label>
+    <input type="password" name="password" />
+    <br />
+    <button>Registro</button>
+    {{#if this.errorMessage}}
+      <p>{{this.errorMessage}}</p>
+    {{/if}}
+  </form>
+</div>
