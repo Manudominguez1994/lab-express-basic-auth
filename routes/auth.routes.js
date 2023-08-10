@@ -73,4 +73,34 @@ router.post("/login", async (req, res, next) => {
     next(error);
   }
 });
+
+router.post("/login", async (req, res, next) => {
+  const { username, password } = req.body;
+  try {
+    //Primero busco el usuario por su nombre
+    const oneUserName = await User.findOne({ username: username });
+    // console.log("usuario intentado logear",oneUserName);
+    //Verifica que el user existe en mi DB
+    if (oneUserName === null) {
+      res.status(400).render("auth/login.hbs", {
+        errorMessage: "Este usuario no existe",
+      });
+      return;
+    }
+    //Verifico que la contraseña sea correcta
+    const passCorrect = await bcrypt.compare(password, oneUserName.password)
+    console.log("contraseña correcta tras comparar",passCorrect);
+    //verifico que la contraseña es correcta
+    if(passCorrect === false){
+        res.status(400).render("auth/login.hbs", {
+            errorMessage:
+              "Contraseña no valida",
+          });
+          return
+    }
+    res.redirect("/user")
+  } catch (error) {
+    next(error);
+  }
+});
 module.exports = router;
